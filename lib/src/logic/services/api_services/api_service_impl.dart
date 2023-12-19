@@ -2,6 +2,8 @@
 
 // 🌎 Project imports:
 
+import 'package:pgrkam/src/models/responses/job_data.dart';
+
 import '../../../models/responses/responses.dart';
 import '/src/utils/network_utils.dart';
 import 'package:dio/dio.dart';
@@ -28,7 +30,7 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<bool>> signIn({
+  Future<ApiResponse<String>> signIn({
     required String email,
     required String password,
   }) async {
@@ -39,17 +41,17 @@ class ApiServiceImpl extends ApiService {
           password: password,
         ),
       ) as Map<String, dynamic>;
-      if (response['message']['success'] == true) {
-        return ApiResponse.success(true);
+      if (response['success'] == true) {
+        return ApiResponse.success(response['data']);
       } else {
         return ApiResponse.error('Something Went Wrong');
       }
     } catch (e) {
       final hasInternet = await hasInternetAccess();
       if (!hasInternet!) {
-        return ApiResponse<bool>.noInternet();
+        return ApiResponse<String>.noInternet();
       }
-      return ApiResponse<bool>.error('Something went wrong');
+      return ApiResponse<String>.error('Something went wrong');
     }
   }
 
@@ -86,8 +88,9 @@ class ApiServiceImpl extends ApiService {
         token: authToken,
       ) as Map<String, dynamic>;
 
-      if (response['message'] != 'Unauthorized - Authentication Required') {
-        return ApiResponse.success(UserData.fromJson(response));
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success(UserData.fromJson(response['data']));
       } else {
         return ApiResponse.error('Something Went Wrong');
       }
@@ -103,6 +106,65 @@ class ApiServiceImpl extends ApiService {
         return ApiResponse<UserData>.noInternet();
       }
       return ApiResponse<UserData>.error('Something went wrong');
+    }
+  }
+
+  @override
+  Future<ApiResponse<List<ApplicantData>>> fetchUsersDetails() async {
+    try {
+      final response =
+          await _authApiClient.fetchUsersData() as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success((response['data'] as List)
+            .map((e) => ApplicantData.fromJson(e))
+            .toList());
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<List<ApplicantData>>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<List<ApplicantData>>.noInternet();
+      }
+      return ApiResponse<List<ApplicantData>>.error('Something went wrong');
+    }
+  }
+
+  @override
+  Future<ApiResponse<List<List<String>>>> fetchJobsDetails() async {
+    try {
+      final response =
+          await _authApiClient.fetchJobsData() as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success((response['data'] as List)
+            .map((e) =>
+                ((e as Map<String, dynamic>)['industry'] ?? []) as List<String>)
+            .toList());
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<List<List<String>>>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<List<List<String>>>.noInternet();
+      }
+      return ApiResponse<List<List<String>>>.error('Something went wrong');
     }
   }
 }

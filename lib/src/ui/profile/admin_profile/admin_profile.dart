@@ -5,14 +5,14 @@ import 'package:pgrkam/src/logic/repositories/auth_repository/auth_repository.da
 import 'package:pgrkam/src/routing/router.dart';
 
 @RoutePage()
-class ProfilePage extends ConsumerStatefulWidget {
-  const ProfilePage({super.key});
+class AdminProfilePage extends ConsumerStatefulWidget {
+  const AdminProfilePage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage> {
+class _ProfilePageState extends ConsumerState<AdminProfilePage> {
   @override
   Widget build(BuildContext context) {
     final status =
@@ -23,10 +23,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Profile Page'),
+            Text('Admin Profile Page'),
             ElevatedButton(
               onPressed: () {
-                context.navigateTo(AuthRoute());
+                if (status == AuthStatus.authenticated) {
+                  ref.read(authRepositoryProvider.notifier).signOut();
+                  context.popRoute();
+                } else {
+                  context.navigateTo(AuthRoute());
+                }
               },
               child:
                   Text(status == AuthStatus.authenticated ? 'LogOut' : 'Login'),

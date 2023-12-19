@@ -9,6 +9,7 @@ import '../ui/home/home_page.dart';
 import '../ui/jobs/jobs_list_page.dart';
 import '../ui/main/main_page.dart';
 import '../ui/no_internet/no_internet_screen.dart';
+import '../ui/profile/admin_profile/admin_profile.dart';
 import '../ui/profile/profile_page.dart';
 import '../ui/splash/splash_page.dart';
 
@@ -54,8 +55,8 @@ class AppRouter extends _$AppRouter {
       ],
     ),
     AutoRoute(
-      path: '/profile',
-      page: ProfileRoute.page,
+      path: '/admin-profiles',
+      page: AdminProfileRoute.page,
     ),
     AutoRoute(
       path: '/no-internet',

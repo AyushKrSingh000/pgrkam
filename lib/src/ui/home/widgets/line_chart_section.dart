@@ -9,17 +9,17 @@ class MyHomePage extends StatelessWidget {
   // Generate some dummy data for the cahrt
   // This will be used to draw the red line
   final List<FlSpot> dummyData1 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
+    return FlSpot(index.toDouble(), index * 70000 * Random().nextDouble());
   });
 
   // This will be used to draw the orange line
   final List<FlSpot> dummyData2 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
+    return FlSpot(index.toDouble(), index * 30000 * Random().nextDouble());
   });
 
   // This will be used to draw the blue line
   final List<FlSpot> dummyData3 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
+    return FlSpot(index.toDouble(), index * 600 * Random().nextDouble());
   });
 
   @override
@@ -56,7 +56,7 @@ class MyHomePage extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 170,
-                  width: 250,
+                  width: 260,
                   child: LineChart(
                     LineChartData(
                       borderData: FlBorderData(show: false),
@@ -100,21 +100,21 @@ class MyHomePage extends StatelessWidget {
                           color: Colors.indigo,
                         ),
                       ),
-                      const Text('9.1k'),
+                      Text(dummyData1.last.y.toStringAsFixed(0)),
                       Text(
                         '7 Days',
                         style: GoogleFonts.outfit(
                           color: Colors.red,
                         ),
                       ),
-                      const Text('9.1k'),
+                      Text(dummyData2.last.y.toStringAsFixed(0)),
                       Text(
                         '1 Day',
                         style: GoogleFonts.outfit(
                           color: Colors.blue,
                         ),
                       ),
-                      Text('9.1k'),
+                      Text(dummyData3.last.y.toStringAsFixed(0)),
                     ],
                   ),
                 )

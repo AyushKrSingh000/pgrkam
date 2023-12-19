@@ -4,16 +4,17 @@ part 'user_data.g.dart';
 
 @JsonSerializable()
 class UserData {
+  @JsonKey(name: '_id')
   final String userId;
   @JsonKey(name: 'name')
   final String userName;
-  @JsonKey(name: 'email')
+
   final String email;
-  @JsonKey(name: 'passsword')
+
   final String password;
   @JsonKey(name: 'role')
-  final UserRole role;
-  final int phone;
+  final String role;
+  final int? phone;
 
   UserData({
     required this.userId,

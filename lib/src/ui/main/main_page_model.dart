@@ -16,9 +16,7 @@ class MainPageModel extends StateNotifier<MainPageState> {
 
   MainPageModel({
     required this.apiService,
-  }) : super(const MainPageState()) {}
-
-  fetchUserBalance() {}
+  }) : super(const MainPageState());
 }
 
 @freezed

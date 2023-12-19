@@ -7,11 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pgrkam/src/constants/colors.dart';
+import 'package:pgrkam/src/models/responses/job_data.dart';
 import 'package:pgrkam/src/routing/router.dart';
-import 'package:pgrkam/src/ui/home/widgets/dashboard_page.dart';
+import 'package:pgrkam/src/ui/home/widgets/dashboard.dart';
+
+import 'package:pgrkam/src/ui/home/widgets/user_home_page.dart';
 
 import '../../logic/repositories/auth_repository/auth_repository.dart';
-import '../../models/responses/user_data.dart';
+
 // import 'package:pgrkam/src/utils/color_utils.dart';
 
 @RoutePage()
@@ -26,14 +29,6 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with TickerProviderStateMixin {
-  late final TabController _tabController;
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    // Future.delayed(Duration.zero, () {});
-  }
-
   @override
   Widget build(BuildContext context) {
     final userData =
@@ -53,59 +48,33 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Hey Ayush!',
+                    'Hey ${userData != null ? userData.userName : "Admin!"}',
                     style: GoogleFonts.montserrat(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (userData?.role != UserRole.admin)
-                    GestureDetector(
-                      onTap: () {
-                        context.navigateTo(const ProfileRoute());
-                      },
-                      child: const Icon(
-                        CupertinoIcons.person_alt_circle,
-                        size: 30,
-                      ),
+                  // if (!(userData == null || userData.role == 'applicant'))
+                  GestureDetector(
+                    onTap: () {
+                      context.navigateTo(const AdminProfileRoute());
+                    },
+                    child: const Icon(
+                      CupertinoIcons.person_alt_circle,
+                      size: 30,
                     ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              height: 40,
-              child: TabBar(
-                splashFactory: NoSplash.splashFactory,
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    return states.contains(MaterialState.focused)
-                        ? null
-                        : Colors.transparent;
-                  },
-                ),
-                indicatorColor: primaryColor,
-                isScrollable: false,
-                labelColor: primaryColor,
-                labelStyle: GoogleFonts.outfit(
-                  fontSize: 18,
-                ),
-                tabs: [
-                  Tab(
-                    height: 40,
-                    child: Text('Dashboard'),
-                  ),
-                  Tab(
-                    height: 40,
-                    child: Text('Reports'),
-                  )
-                ],
-                controller: _tabController,
-              ),
-            ),
-            Expanded(child: const DashboardPage()),
+            // if (!(userData != null && userData.role != 'applicant')) ...[
+            const Expanded(child: const DashBoard()),
+            // ] else ...[
+            // const UserHomePage(),
+            // ]
           ],
         ),
       ),

@@ -34,7 +34,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          'signin',
+          '/user/signin',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -51,7 +51,7 @@ class _AuthApiClient implements AuthApiClient {
   Future<dynamic> fetchUserData({required String token}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{r'authorization': token};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
@@ -61,7 +61,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/me',
+          '/user/auth/me',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -89,7 +89,59 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/verify_otp',
+          '/user/auth/verify_otp',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> fetchUsersData() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/applicant',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> fetchJobsData() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/job',
           queryParameters: queryParameters,
           data: _data,
         )

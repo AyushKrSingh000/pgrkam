@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pgrkam/src/models/responses/job_data.dart';
 
 import '../../../models/responses/responses.dart';
 import 'api_service_impl.dart';
@@ -8,7 +9,7 @@ final apiServiceProvider = Provider<ApiService>(
 );
 
 abstract class ApiService {
-  Future<ApiResponse<bool>> signIn({
+  Future<ApiResponse<String>> signIn({
     required String email,
     required String password,
   });
@@ -19,4 +20,6 @@ abstract class ApiService {
   Future<ApiResponse<UserData>> fetchUserDetails({
     required String authToken,
   });
+  Future<ApiResponse<List<ApplicantData>>> fetchUsersDetails();
+  Future<ApiResponse<List<List<String>>>> fetchJobsDetails();
 }

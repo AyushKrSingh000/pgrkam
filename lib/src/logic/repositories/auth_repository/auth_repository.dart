@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:pgrkam/src/models/responses/job_data.dart';
+
 import '../../../models/responses/api_response.dart';
 import '../../../models/responses/user_data.dart';
 
@@ -33,9 +35,10 @@ class AuthRepository extends StateNotifier<AuthState> {
     required this.ref,
   }) : super(const AuthState()) {
     // fetchUserDetails();
-    state = state.copyWith(
-      status: AuthStatus.unauthenticated,
-    );
+    // state = state.copyWith(
+    //   status: AuthStatus.unauthenticated,
+    // );
+    fetchUserDetails();
   }
 
   fetchUserDetails() async {
@@ -50,12 +53,15 @@ class AuthRepository extends StateNotifier<AuthState> {
       final response = await apiService.fetchUserDetails(
         authToken: authToken,
       );
+
       if (response.status == ApiStatus.success) {
         state = state.copyWith(
-          status: AuthStatus.authenticated,
           idToken: authToken,
           authUser: response.data,
         );
+        if (state.authUser != null && state.authUser!.role != 'applicant') {
+          fetchUsersDetails();
+        }
       } else {
         state = state.copyWith(
           status: AuthStatus.unauthenticated,
@@ -66,6 +72,34 @@ class AuthRepository extends StateNotifier<AuthState> {
         status: AuthStatus.unauthenticated,
       );
     }
+  }
+
+  fetchUsersDetails() async {
+    // final authToken = preferenceService.getString(
+    //   PreferenceService.authToken,
+    // );
+    // state = state.copyWith(
+    //   status: AuthStatus.initial,
+    // );
+    // if (authToken != null) {
+    //   debugPrint(authToken);
+    final response = await apiService.fetchUsersDetails(
+        // authToken: authToken,
+        );
+
+    if (response.status == ApiStatus.success) {
+      state = state.copyWith(
+        status: AuthStatus.authenticated,
+        // idToken: authToken,
+        applicantData: response.data,
+      );
+    } else {
+      state = state.copyWith(
+        status: AuthStatus.unauthenticated,
+      );
+    }
+
+    // }
   }
 
   signOut() {
@@ -101,6 +135,7 @@ class AuthState with _$AuthState {
   const factory AuthState({
     @Default(null) UserData? authUser,
     @Default(null) String? idToken,
+    @Default(null) List<ApplicantData>? applicantData,
     @Default(AuthStatus.initial) AuthStatus status,
   }) = _AuthState;
 }

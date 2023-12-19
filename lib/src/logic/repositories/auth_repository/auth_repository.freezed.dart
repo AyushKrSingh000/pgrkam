@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthState {
   UserData? get authUser => throw _privateConstructorUsedError;
   String? get idToken => throw _privateConstructorUsedError;
+  List<ApplicantData>? get applicantData => throw _privateConstructorUsedError;
   AuthStatus get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,11 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({UserData? authUser, String? idToken, AuthStatus status});
+  $Res call(
+      {UserData? authUser,
+      String? idToken,
+      List<ApplicantData>? applicantData,
+      AuthStatus status});
 }
 
 /// @nodoc
@@ -48,6 +53,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   $Res call({
     Object? authUser = freezed,
     Object? idToken = freezed,
+    Object? applicantData = freezed,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
@@ -59,6 +65,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.idToken
           : idToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      applicantData: freezed == applicantData
+          ? _value.applicantData
+          : applicantData // ignore: cast_nullable_to_non_nullable
+              as List<ApplicantData>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -75,7 +85,11 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserData? authUser, String? idToken, AuthStatus status});
+  $Res call(
+      {UserData? authUser,
+      String? idToken,
+      List<ApplicantData>? applicantData,
+      AuthStatus status});
 }
 
 /// @nodoc
@@ -91,6 +105,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   $Res call({
     Object? authUser = freezed,
     Object? idToken = freezed,
+    Object? applicantData = freezed,
     Object? status = null,
   }) {
     return _then(_$AuthStateImpl(
@@ -102,6 +117,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.idToken
           : idToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      applicantData: freezed == applicantData
+          ? _value._applicantData
+          : applicantData // ignore: cast_nullable_to_non_nullable
+              as List<ApplicantData>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -116,7 +135,9 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
   const _$AuthStateImpl(
       {this.authUser = null,
       this.idToken = null,
-      this.status = AuthStatus.initial});
+      final List<ApplicantData>? applicantData = null,
+      this.status = AuthStatus.initial})
+      : _applicantData = applicantData;
 
   @override
   @JsonKey()
@@ -124,13 +145,24 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
   @override
   @JsonKey()
   final String? idToken;
+  final List<ApplicantData>? _applicantData;
+  @override
+  @JsonKey()
+  List<ApplicantData>? get applicantData {
+    final value = _applicantData;
+    if (value == null) return null;
+    if (_applicantData is EqualUnmodifiableListView) return _applicantData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final AuthStatus status;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthState(authUser: $authUser, idToken: $idToken, status: $status)';
+    return 'AuthState(authUser: $authUser, idToken: $idToken, applicantData: $applicantData, status: $status)';
   }
 
   @override
@@ -140,6 +172,7 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
       ..add(DiagnosticsProperty('type', 'AuthState'))
       ..add(DiagnosticsProperty('authUser', authUser))
       ..add(DiagnosticsProperty('idToken', idToken))
+      ..add(DiagnosticsProperty('applicantData', applicantData))
       ..add(DiagnosticsProperty('status', status));
   }
 
@@ -151,11 +184,14 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
             (identical(other.authUser, authUser) ||
                 other.authUser == authUser) &&
             (identical(other.idToken, idToken) || other.idToken == idToken) &&
+            const DeepCollectionEquality()
+                .equals(other._applicantData, _applicantData) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, authUser, idToken, status);
+  int get hashCode => Object.hash(runtimeType, authUser, idToken,
+      const DeepCollectionEquality().hash(_applicantData), status);
 
   @JsonKey(ignore: true)
   @override
@@ -168,12 +204,15 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {final UserData? authUser,
       final String? idToken,
+      final List<ApplicantData>? applicantData,
       final AuthStatus status}) = _$AuthStateImpl;
 
   @override
   UserData? get authUser;
   @override
   String? get idToken;
+  @override
+  List<ApplicantData>? get applicantData;
   @override
   AuthStatus get status;
   @override

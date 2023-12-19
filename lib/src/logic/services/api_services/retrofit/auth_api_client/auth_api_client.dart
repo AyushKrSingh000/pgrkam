@@ -11,16 +11,20 @@ abstract class AuthApiClient {
     String baseUrl,
   }) = _AuthApiClient;
 
-  @POST('signin')
+  @POST('/user/signin')
   Future signIn({
     @Body() required UserLoginRequest userLoginRequest,
   });
-  @GET('/auth/me')
+  @GET('/user/auth/me')
   Future fetchUserData({
-    @Header('Authorization') required String token,
+    @Header('authorization') required String token,
   });
-  @POST('/auth/verify_otp')
+  @POST('/user/auth/verify_otp')
   Future verifyOtp({
     @Body() required UserLoginRequest userLoginRequest,
   });
+  @GET('/applicant')
+  Future fetchUsersData();
+  @GET('/job')
+  Future fetchJobsData();
 }

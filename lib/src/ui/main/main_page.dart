@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:pgrkam/src/models/responses/user_data.dart';
+
 import '/src/routing/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,9 +54,9 @@ class _MainPageState extends ConsumerState<MainPage> {
         AppliedJobsRoute(),
         ProfileRoute(),
       ],
-      bottomNavigationBuilder: userData?.role != UserRole.admin
-          ? null
-          : (context, router) => PGKRAMBottomBar(router, router.activeIndex),
+      // bottomNavigationBuilder: userData == null || userData.role == 'applicant'
+      //     ? (context, router) => PGKRAMBottomBar(router, router.activeIndex)
+      //     : null,
     );
   }
 }

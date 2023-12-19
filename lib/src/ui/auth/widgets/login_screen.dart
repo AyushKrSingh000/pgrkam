@@ -1,14 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:pgrkam/src/utils/toast_utils.dart';
 
 import '../auth_page_model.dart';
 import 'widgets.dart';
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  bool isProcessing = false;
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Column(
@@ -29,12 +36,28 @@ class LoginScreen extends ConsumerWidget {
                   const SizedBox(height: 25),
                   Cta(
                     label: 'Sign In',
-                    onPressed: () {},
-                    isProcessing: ref.watch(
-                      authPageModelProvider.select(
-                        (_) => _.status == AuthPageStatus.processing,
-                      ),
-                    ),
+                    onPressed: () async {
+                      if (!isProcessing) {
+                        setState(() {
+                          isProcessing = true;
+                        });
+                        final res = await ref
+                            .read(authPageModelProvider.notifier)
+                            .login();
+                        if (res != '') {
+                          showErrorMessage(context, res);
+                        } else {
+                          showSuccessMessage(
+                              context, 'Logged in successfully!');
+                        }
+                        if (mounted) {
+                          setState(() {
+                            isProcessing = false;
+                          });
+                        }
+                      }
+                    },
+                    isProcessing: isProcessing,
                   ),
                 ],
               ),

@@ -33,7 +33,7 @@ class _PhoneNumberTextFieldState extends ConsumerState<EmailTextField> {
       height: 50,
       child: TextFormField(
         controller: _controller,
-        keyboardType: TextInputType.number,
+
         cursorColor: const Color(0xFF3886eb),
         decoration: InputDecoration(
           prefixIcon: SizedBox(
@@ -112,7 +112,6 @@ class _PasswordTextFieldState extends ConsumerState<PasswordTextField> {
       height: 50,
       child: TextFormField(
         controller: _controller,
-        keyboardType: TextInputType.number,
         cursorColor: const Color(0xFF3886eb),
         decoration: InputDecoration(
           prefixIcon: SizedBox(

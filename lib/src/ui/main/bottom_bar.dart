@@ -31,15 +31,15 @@ class PGKRAMBottomBar extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Divider(
-            thickness: 1,
-            color: Color(0xFFeeeeee),
-            height: 0,
-          ),
+          // const Divider(
+          //   thickness: 1,
+          //   color: Color(0xFFeeeeee),
+          //   height: 0,
+          // ),
           Container(
             height: PGKRAMBottomBar.height,
             decoration: const BoxDecoration(
-              color: Color(0xFFffffff),
+              color: Color(0xffffa87c),
               boxShadow: [
                 BoxShadow(
                   color: Color(0xFFdddddd),
@@ -138,22 +138,12 @@ class _NavigationBarItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Image.asset(
-              //   isActive
-              //       ? 'assets/images/ic_${label.toLowerCase()}.png'
-              //       : 'assets/images/ic__${label.toLowerCase()}.png',
-              //   height: 20,
-              //   width: 20,
-              //   fit: BoxFit.contain,
-              // ),
               const SizedBox(height: 4),
               Text(
                 label,
                 style: GoogleFonts.lato(
-                  color: isActive
-                      ? const Color(0xFF000000)
-                      : const Color(0xFF888888),
-                  fontSize: 11,
+                  color: isActive ? const Color(0xFF000000) : Colors.white,
+                  fontSize: isActive ? 15 : 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.2,
                 ),

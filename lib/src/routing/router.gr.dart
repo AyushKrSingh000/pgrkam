@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    AdminProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AdminProfilePage(),
+      );
+    },
     AppliedJobsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -69,6 +75,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [AdminProfilePage]
+class AdminProfileRoute extends PageRouteInfo<void> {
+  const AdminProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          AdminProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AdminProfileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
