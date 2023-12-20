@@ -70,9 +70,6 @@ class _HomePageState extends ConsumerState<HomePage>
                   ],
                 ),
               ),
-            const SizedBox(
-              height: 20,
-            ),
             if ((userData != null && userData.role != 'applicant')) ...[
               const Expanded(child: DashBoard()),
             ] else if (userData != null && userData.role == 'applicant') ...[

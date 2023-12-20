@@ -44,14 +44,15 @@ class ApiServiceImpl extends ApiService {
       if (response['success'] == true) {
         return ApiResponse.success(response['data']);
       } else {
-        return ApiResponse.error('Something Went Wrong');
+        throw (response['error'] as Map)['explanation'] ??
+            'Something Went Wrong';
       }
     } catch (e) {
       final hasInternet = await hasInternetAccess();
       if (!hasInternet!) {
         return ApiResponse<String>.noInternet();
       }
-      return ApiResponse<String>.error('Something went wrong');
+      return ApiResponse<String>.error(e.toString());
     }
   }
 
@@ -197,38 +198,64 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<List<Map<JobData, double>>>> fetchRecommendedJobsDetails({
+  Future<ApiResponse<List<Map<JobData, String>>>> fetchRecommendedJobsDetails({
     required String authToken,
   }) async {
-    // try {
-    final response = await _authApiClient.fetchRecommendedJobs(
-      token: authToken,
-    ) as Map<String, dynamic>;
+    try {
+      final response = await _authApiClient.fetchRecommendedJobs(
+        token: authToken,
+      ) as Map<String, dynamic>;
 
-    if (response['message'].toString().toLowerCase().trim() ==
-        'Successfully completed the request'.toLowerCase()) {
-      return ApiResponse.success((response['data'] as List)
-          .map((e) => {
-                JobData.fromJson(e['job']):
-                    double.parse(e['success'].toString())
-              })
-          .toList());
-    } else {
-      return ApiResponse.error('Something Went Wrong');
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success((response['data'] as List)
+            .map((e) => {
+                  JobData.fromJson(e['job']): e['success_rate'].toString(),
+                })
+            .toList());
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<List<Map<JobData, String>>>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<List<Map<JobData, String>>>.noInternet();
+      }
+      return ApiResponse<List<Map<JobData, String>>>.error(
+          'Something went wrong');
     }
-    // } catch (e) {
-    //   debugPrint(e.toString());
-    //   if (e.runtimeType == DioError &&
-    //       (e as DioError).type == DioErrorType.badResponse &&
-    //       e.response?.statusCode == 401) {
-    //     return ApiResponse<List<Map<JobData, double>>>.authError();
-    //   }
-    //   final hasInternet = await hasInternetAccess();
-    //   if (!hasInternet!) {
-    //     return ApiResponse<List<Map<JobData, double>>>.noInternet();
-    //   }
-    //   return ApiResponse<List<Map<JobData, double>>>.error(
-    //       'Something went wrong');
-    // }
+  }
+
+  @override
+  Future<ApiResponse<Map<String, dynamic>>> fetchTrackData() async {
+    try {
+      final response =
+          await _authApiClient.fetchTrackData() as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success((response['data']));
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<Map<String, dynamic>>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<Map<String, dynamic>>.noInternet();
+      }
+      return ApiResponse<Map<String, dynamic>>.error('Something went wrong');
+    }
   }
 }

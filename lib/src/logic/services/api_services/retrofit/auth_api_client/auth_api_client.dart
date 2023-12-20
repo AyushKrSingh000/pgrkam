@@ -33,4 +33,6 @@ abstract class AuthApiClient {
   });
   @GET('/user')
   Future fetchUsersList();
+  @GET('/track/stats')
+  Future fetchTrackData();
 }

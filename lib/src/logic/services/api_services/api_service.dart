@@ -23,7 +23,8 @@ abstract class ApiService {
   Future<ApiResponse<List<ApplicantData>>> fetchUsersDetails();
   Future<ApiResponse<List<JobData>>> fetchJobsDetails();
   Future<ApiResponse<List<UserData>>> fetchUserList();
-  Future<ApiResponse<List<Map<JobData, double>>>> fetchRecommendedJobsDetails({
+  Future<ApiResponse<List<Map<JobData, String>>>> fetchRecommendedJobsDetails({
     required String authToken,
   });
+  Future<ApiResponse<Map<String, dynamic>>> fetchTrackData();
 }

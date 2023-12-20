@@ -21,7 +21,7 @@ mixin _$AuthState {
   List<ApplicantData>? get applicantData => throw _privateConstructorUsedError;
   List<JobData>? get jobData => throw _privateConstructorUsedError;
   List<UserData>? get users => throw _privateConstructorUsedError;
-  List<Map<JobData, double>>? get recommmendedJobs =>
+  List<Map<JobData, String>>? get recommmendedJobs =>
       throw _privateConstructorUsedError;
   AuthStatus get status => throw _privateConstructorUsedError;
 
@@ -41,7 +41,7 @@ abstract class $AuthStateCopyWith<$Res> {
       List<ApplicantData>? applicantData,
       List<JobData>? jobData,
       List<UserData>? users,
-      List<Map<JobData, double>>? recommmendedJobs,
+      List<Map<JobData, String>>? recommmendedJobs,
       AuthStatus status});
 }
 
@@ -90,7 +90,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
       recommmendedJobs: freezed == recommmendedJobs
           ? _value.recommmendedJobs
           : recommmendedJobs // ignore: cast_nullable_to_non_nullable
-              as List<Map<JobData, double>>?,
+              as List<Map<JobData, String>>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -113,7 +113,7 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       List<ApplicantData>? applicantData,
       List<JobData>? jobData,
       List<UserData>? users,
-      List<Map<JobData, double>>? recommmendedJobs,
+      List<Map<JobData, String>>? recommmendedJobs,
       AuthStatus status});
 }
 
@@ -160,7 +160,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
       recommmendedJobs: freezed == recommmendedJobs
           ? _value._recommmendedJobs
           : recommmendedJobs // ignore: cast_nullable_to_non_nullable
-              as List<Map<JobData, double>>?,
+              as List<Map<JobData, String>>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -178,7 +178,7 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
       final List<ApplicantData>? applicantData = null,
       final List<JobData>? jobData = null,
       final List<UserData>? users = null,
-      final List<Map<JobData, double>>? recommmendedJobs = null,
+      final List<Map<JobData, String>>? recommmendedJobs = null,
       this.status = AuthStatus.initial})
       : _applicantData = applicantData,
         _jobData = jobData,
@@ -224,10 +224,10 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<Map<JobData, double>>? _recommmendedJobs;
+  final List<Map<JobData, String>>? _recommmendedJobs;
   @override
   @JsonKey()
-  List<Map<JobData, double>>? get recommmendedJobs {
+  List<Map<JobData, String>>? get recommmendedJobs {
     final value = _recommmendedJobs;
     if (value == null) return null;
     if (_recommmendedJobs is EqualUnmodifiableListView)
@@ -301,7 +301,7 @@ abstract class _AuthState implements AuthState {
       final List<ApplicantData>? applicantData,
       final List<JobData>? jobData,
       final List<UserData>? users,
-      final List<Map<JobData, double>>? recommmendedJobs,
+      final List<Map<JobData, String>>? recommmendedJobs,
       final AuthStatus status}) = _$AuthStateImpl;
 
   @override
@@ -315,7 +315,7 @@ abstract class _AuthState implements AuthState {
   @override
   List<UserData>? get users;
   @override
-  List<Map<JobData, double>>? get recommmendedJobs;
+  List<Map<JobData, String>>? get recommmendedJobs;
   @override
   AuthStatus get status;
   @override

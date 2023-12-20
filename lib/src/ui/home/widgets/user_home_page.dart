@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pgrkam/src/logic/repositories/auth_repository/auth_repository.dart';
+import 'package:pgrkam/src/ui/home/widgets/ad_corousal.dart';
+import 'package:pgrkam/src/ui/home/widgets/course_card.dart';
 
 import '../../../models/responses/job_data.dart';
 
@@ -29,18 +31,7 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    height: 180,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200,
-                    ),
-                    child: Center(child: Text('Advertisement Sections')),
-                  ),
-                ),
+                const SizedBox(height: 250, child: HomeCorousalSection()),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
@@ -110,20 +101,25 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Coming Soon!',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.outfit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
+                SizedBox(
+                  height: 190,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List<int>.generate(5, (value) => value)
+                          .map(
+                            (e) => Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: EventCard(),
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 100,
                 ),
               ],
             ),
@@ -133,7 +129,7 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
 
 class JobCard extends ConsumerStatefulWidget {
   final JobData jobData;
-  final double? successScore;
+  final String? successScore;
   const JobCard({
     super.key,
     required this.jobData,
@@ -297,7 +293,8 @@ class _JobCardState extends ConsumerState<JobCard> {
                           ),
                         ),
                         Text(
-                          (widget.successScore! * 1000).toStringAsFixed(2),
+                          (double.parse(widget.successScore ?? '0')
+                              .toStringAsFixed(3)),
                           style: GoogleFonts.outfit(
                               // fontWeight: FontWeight.w700,
                               ),

@@ -20,7 +20,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // _navigateToMainPageAfterDelay();
+    _navigateToMainPageAfterDelay();
   }
 
   @override

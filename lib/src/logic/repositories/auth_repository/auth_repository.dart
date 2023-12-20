@@ -229,7 +229,7 @@ class AuthState with _$AuthState {
     @Default(null) List<ApplicantData>? applicantData,
     @Default(null) List<JobData>? jobData,
     @Default(null) List<UserData>? users,
-    @Default(null) List<Map<JobData, double>>? recommmendedJobs,
+    @Default(null) List<Map<JobData, String>>? recommmendedJobs,
     @Default(AuthStatus.initial) AuthStatus status,
   }) = _AuthState;
 }
