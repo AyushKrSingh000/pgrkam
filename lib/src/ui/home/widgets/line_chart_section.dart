@@ -1,29 +1,72 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
+import '../../../logic/repositories/auth_repository/auth_repository.dart';
+import '../../../utils/time_utils.dart';
 
-  // Generate some dummy data for the cahrt
-  // This will be used to draw the red line
-  final List<FlSpot> dummyData1 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * 70000 * Random().nextDouble());
-  });
-
-  // This will be used to draw the orange line
-  final List<FlSpot> dummyData2 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * 30000 * Random().nextDouble());
-  });
-
-  // This will be used to draw the blue line
-  final List<FlSpot> dummyData3 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * 600 * Random().nextDouble());
-  });
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({super.key});
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
+    // Generate some dummy data for the cahrt
+    // This will be used to draw the red line
+    final users =
+        ref.watch(authRepositoryProvider.select((value) => value.users));
+
+    final updatedUsers = users?.toList()
+      ?..removeWhere((element) => element.updatedAt == null);
+    final activeUsers = (updatedUsers?.toList() ?? [])
+      ..sort((a, b) => prettyTimestamp2(b.updatedAt ?? "")
+          .compareTo(prettyTimestamp2(a.updatedAt ?? "")));
+    final List<FlSpot> dummyData1 = List.generate(8, (index) {
+      return FlSpot(
+          index.toDouble(),
+          activeUsers
+              .where((element) =>
+                  prettyTimestamp2(element.updatedAt ?? "").compareTo(
+                      DateTime.now().subtract(Duration(days: 7 - index))) <
+                  0)
+              .length
+              .toDouble());
+    });
+
+    // This will be used to draw the orange line
+    final List<FlSpot> dummyData2 = List.generate(8, (index) {
+      return FlSpot(
+          index.toDouble(),
+          activeUsers
+              .where((element) =>
+                  prettyTimestamp2(element.updatedAt ?? "").compareTo(
+                      DateTime.now()
+                          .add(Duration(days: 1))
+                          .subtract(Duration(days: 7 - index))) <
+                  0)
+              .length
+              .toDouble());
+    });
+
+    // This will be used to draw the blue line
+    final List<FlSpot> dummyData3 = List.generate(8, (index) {
+      return FlSpot(
+          index.toDouble(),
+          activeUsers
+              .where((element) =>
+                  prettyTimestamp2(element.updatedAt ?? "").compareTo(
+                      DateTime.now().subtract(Duration(days: 7 - index))) <
+                  0)
+              .length
+              .toDouble());
+    });
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -56,7 +99,7 @@ class MyHomePage extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 170,
-                  width: 260,
+                  width: 250,
                   child: LineChart(
                     LineChartData(
                       borderData: FlBorderData(show: false),
@@ -98,6 +141,7 @@ class MyHomePage extends StatelessWidget {
                         '30 Days',
                         style: GoogleFonts.outfit(
                           color: Colors.indigo,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(dummyData1.last.y.toStringAsFixed(0)),
@@ -105,6 +149,7 @@ class MyHomePage extends StatelessWidget {
                         '7 Days',
                         style: GoogleFonts.outfit(
                           color: Colors.red,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(dummyData2.last.y.toStringAsFixed(0)),
@@ -112,6 +157,7 @@ class MyHomePage extends StatelessWidget {
                         '1 Day',
                         style: GoogleFonts.outfit(
                           color: Colors.blue,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(dummyData3.last.y.toStringAsFixed(0)),

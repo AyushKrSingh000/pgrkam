@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pgrkam/src/constants/colors.dart';
 
 import '../../routing/router.dart';
 
@@ -21,7 +20,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _navigateToMainPageAfterDelay();
+    // _navigateToMainPageAfterDelay();
   }
 
   @override
@@ -34,17 +33,35 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 105),
-            Center(
+            Image.asset(
+              'assets/images/logo.png',
+              height: 200,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Text(
-                'PGRKAM WEB\nAPPLICATION',
-                style: GoogleFonts.outfit(
-                  fontSize: 26,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  // color: const Color(0xFFFDCA50),
-                ),
+                'PUNJAB GHAR GHAR ROZGAR\nDepartment of Employment Generation,\nSkill Development & Training- Govt. Of Punjab, India',
                 textAlign: TextAlign.center,
+                style: GoogleFonts.outfit(
+                  fontSize: 15,
+                  // color: Colors.orange,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'PGRKAM App',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.outfit(
+                  fontSize: 25,
+                  // color: Colors.orange,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const Expanded(child: SizedBox()),
@@ -53,14 +70,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                 'Loading...',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                   letterSpacing: 0.4,
-                  color: primaryColor,
+                  color: Colors.green[900],
                 ),
               ),
             ),
             const SizedBox(
-              height: 55,
+              height: 85,
             ),
           ],
         ),

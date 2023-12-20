@@ -21,5 +21,9 @@ abstract class ApiService {
     required String authToken,
   });
   Future<ApiResponse<List<ApplicantData>>> fetchUsersDetails();
-  Future<ApiResponse<List<List<String>>>> fetchJobsDetails();
+  Future<ApiResponse<List<JobData>>> fetchJobsDetails();
+  Future<ApiResponse<List<UserData>>> fetchUserList();
+  Future<ApiResponse<List<Map<JobData, double>>>> fetchRecommendedJobsDetails({
+    required String authToken,
+  });
 }

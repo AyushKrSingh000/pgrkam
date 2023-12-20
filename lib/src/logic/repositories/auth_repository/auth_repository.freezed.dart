@@ -19,6 +19,10 @@ mixin _$AuthState {
   UserData? get authUser => throw _privateConstructorUsedError;
   String? get idToken => throw _privateConstructorUsedError;
   List<ApplicantData>? get applicantData => throw _privateConstructorUsedError;
+  List<JobData>? get jobData => throw _privateConstructorUsedError;
+  List<UserData>? get users => throw _privateConstructorUsedError;
+  List<Map<JobData, double>>? get recommmendedJobs =>
+      throw _privateConstructorUsedError;
   AuthStatus get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -35,6 +39,9 @@ abstract class $AuthStateCopyWith<$Res> {
       {UserData? authUser,
       String? idToken,
       List<ApplicantData>? applicantData,
+      List<JobData>? jobData,
+      List<UserData>? users,
+      List<Map<JobData, double>>? recommmendedJobs,
       AuthStatus status});
 }
 
@@ -54,6 +61,9 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? authUser = freezed,
     Object? idToken = freezed,
     Object? applicantData = freezed,
+    Object? jobData = freezed,
+    Object? users = freezed,
+    Object? recommmendedJobs = freezed,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
@@ -69,6 +79,18 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.applicantData
           : applicantData // ignore: cast_nullable_to_non_nullable
               as List<ApplicantData>?,
+      jobData: freezed == jobData
+          ? _value.jobData
+          : jobData // ignore: cast_nullable_to_non_nullable
+              as List<JobData>?,
+      users: freezed == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<UserData>?,
+      recommmendedJobs: freezed == recommmendedJobs
+          ? _value.recommmendedJobs
+          : recommmendedJobs // ignore: cast_nullable_to_non_nullable
+              as List<Map<JobData, double>>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -89,6 +111,9 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       {UserData? authUser,
       String? idToken,
       List<ApplicantData>? applicantData,
+      List<JobData>? jobData,
+      List<UserData>? users,
+      List<Map<JobData, double>>? recommmendedJobs,
       AuthStatus status});
 }
 
@@ -106,6 +131,9 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? authUser = freezed,
     Object? idToken = freezed,
     Object? applicantData = freezed,
+    Object? jobData = freezed,
+    Object? users = freezed,
+    Object? recommmendedJobs = freezed,
     Object? status = null,
   }) {
     return _then(_$AuthStateImpl(
@@ -121,6 +149,18 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value._applicantData
           : applicantData // ignore: cast_nullable_to_non_nullable
               as List<ApplicantData>?,
+      jobData: freezed == jobData
+          ? _value._jobData
+          : jobData // ignore: cast_nullable_to_non_nullable
+              as List<JobData>?,
+      users: freezed == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<UserData>?,
+      recommmendedJobs: freezed == recommmendedJobs
+          ? _value._recommmendedJobs
+          : recommmendedJobs // ignore: cast_nullable_to_non_nullable
+              as List<Map<JobData, double>>?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -136,8 +176,14 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
       {this.authUser = null,
       this.idToken = null,
       final List<ApplicantData>? applicantData = null,
+      final List<JobData>? jobData = null,
+      final List<UserData>? users = null,
+      final List<Map<JobData, double>>? recommmendedJobs = null,
       this.status = AuthStatus.initial})
-      : _applicantData = applicantData;
+      : _applicantData = applicantData,
+        _jobData = jobData,
+        _users = users,
+        _recommmendedJobs = recommmendedJobs;
 
   @override
   @JsonKey()
@@ -156,13 +202,47 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<JobData>? _jobData;
+  @override
+  @JsonKey()
+  List<JobData>? get jobData {
+    final value = _jobData;
+    if (value == null) return null;
+    if (_jobData is EqualUnmodifiableListView) return _jobData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<UserData>? _users;
+  @override
+  @JsonKey()
+  List<UserData>? get users {
+    final value = _users;
+    if (value == null) return null;
+    if (_users is EqualUnmodifiableListView) return _users;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Map<JobData, double>>? _recommmendedJobs;
+  @override
+  @JsonKey()
+  List<Map<JobData, double>>? get recommmendedJobs {
+    final value = _recommmendedJobs;
+    if (value == null) return null;
+    if (_recommmendedJobs is EqualUnmodifiableListView)
+      return _recommmendedJobs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final AuthStatus status;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthState(authUser: $authUser, idToken: $idToken, applicantData: $applicantData, status: $status)';
+    return 'AuthState(authUser: $authUser, idToken: $idToken, applicantData: $applicantData, jobData: $jobData, users: $users, recommmendedJobs: $recommmendedJobs, status: $status)';
   }
 
   @override
@@ -173,6 +253,9 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
       ..add(DiagnosticsProperty('authUser', authUser))
       ..add(DiagnosticsProperty('idToken', idToken))
       ..add(DiagnosticsProperty('applicantData', applicantData))
+      ..add(DiagnosticsProperty('jobData', jobData))
+      ..add(DiagnosticsProperty('users', users))
+      ..add(DiagnosticsProperty('recommmendedJobs', recommmendedJobs))
       ..add(DiagnosticsProperty('status', status));
   }
 
@@ -186,12 +269,23 @@ class _$AuthStateImpl with DiagnosticableTreeMixin implements _AuthState {
             (identical(other.idToken, idToken) || other.idToken == idToken) &&
             const DeepCollectionEquality()
                 .equals(other._applicantData, _applicantData) &&
+            const DeepCollectionEquality().equals(other._jobData, _jobData) &&
+            const DeepCollectionEquality().equals(other._users, _users) &&
+            const DeepCollectionEquality()
+                .equals(other._recommmendedJobs, _recommmendedJobs) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, authUser, idToken,
-      const DeepCollectionEquality().hash(_applicantData), status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      authUser,
+      idToken,
+      const DeepCollectionEquality().hash(_applicantData),
+      const DeepCollectionEquality().hash(_jobData),
+      const DeepCollectionEquality().hash(_users),
+      const DeepCollectionEquality().hash(_recommmendedJobs),
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -205,6 +299,9 @@ abstract class _AuthState implements AuthState {
       {final UserData? authUser,
       final String? idToken,
       final List<ApplicantData>? applicantData,
+      final List<JobData>? jobData,
+      final List<UserData>? users,
+      final List<Map<JobData, double>>? recommmendedJobs,
       final AuthStatus status}) = _$AuthStateImpl;
 
   @override
@@ -213,6 +310,12 @@ abstract class _AuthState implements AuthState {
   String? get idToken;
   @override
   List<ApplicantData>? get applicantData;
+  @override
+  List<JobData>? get jobData;
+  @override
+  List<UserData>? get users;
+  @override
+  List<Map<JobData, double>>? get recommmendedJobs;
   @override
   AuthStatus get status;
   @override

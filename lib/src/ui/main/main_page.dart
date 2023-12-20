@@ -30,6 +30,9 @@ class _MainPageState extends ConsumerState<MainPage> {
     final userData =
         ref.watch(authRepositoryProvider.select((value) => value.authUser));
 
+    final status =
+        ref.watch(authRepositoryProvider.select((value) => value.status));
+
     return AutoTabsScaffold(
       // animationDuration: const Duration(milliseconds: 700),
       // // animationCurve: Curves.easeInCubic,
@@ -54,9 +57,11 @@ class _MainPageState extends ConsumerState<MainPage> {
         AppliedJobsRoute(),
         ProfileRoute(),
       ],
-      // bottomNavigationBuilder: userData == null || userData.role == 'applicant'
-      //     ? (context, router) => PGKRAMBottomBar(router, router.activeIndex)
-      //     : null,
+      bottomNavigationBuilder: status == AuthStatus.initial && userData == null
+          ? null
+          : userData == null || userData.role == 'applicant'
+              ? (context, router) => PGKRAMBottomBar(router, router.activeIndex)
+              : null,
     );
   }
 }

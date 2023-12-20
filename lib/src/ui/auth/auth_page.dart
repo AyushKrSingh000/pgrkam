@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:pgrkam/src/ui/auth/widgets/sign_up_screen.dart';
 import '/src/routing/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +29,7 @@ class AuthPage extends ConsumerWidget {
           'Login successful',
         );
         AutoRouter.of(context).popUntilRoot();
+        ref.read(authRepositoryProvider.notifier).fetchUserDetails();
         context.popRoute();
         context.replaceRoute(const MainRoute());
       }
@@ -48,12 +50,16 @@ class AuthPage extends ConsumerWidget {
         );
       }
     });
+    final screen =
+        ref.watch(authPageModelProvider.select((value) => value.activeScreen));
 
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            LoginScreen(),
+            screen == AuthScreen.signIn
+                ? const Expanded(child: LoginScreen())
+                : const Expanded(child: SignUpScreen()),
           ],
         ),
       ),

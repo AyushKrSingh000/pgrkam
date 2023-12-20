@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pgrkam/src/ui/home/demographic/demographic_page.dart';
 import 'package:pgrkam/src/ui/home/user_engagement/user_engagement_page.dart';
 import 'package:pgrkam/src/ui/home/widgets/line_chart_section.dart';
+import 'package:pgrkam/src/utils/time_utils.dart';
 
 import '../../../logic/repositories/auth_repository/auth_repository.dart';
 
@@ -21,7 +22,20 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     // final applicantData = ref
     //     .watch(authRepositoryProvider.select((value) => value.applicantData));
     // print(applicantData);
+    final users =
+        ref.watch(authRepositoryProvider.select((value) => value.users));
 
+    final updatedUsers = users?.toList()
+      ?..removeWhere((element) => element.updatedAt == null);
+    final activeUsers = (updatedUsers?.toList() ?? [])
+      ..sort((a, b) => prettyTimestamp2(b.updatedAt ?? "")
+          .compareTo(prettyTimestamp2(a.updatedAt ?? "")));
+    final count = activeUsers
+        .where((element) =>
+            prettyTimestamp2(element.updatedAt ?? "")
+                .compareTo(DateTime.now().subtract(Duration(minutes: 30))) >
+            0)
+        .length;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -51,28 +65,44 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text('Total Sign Ups'),
-                          FittedBox(
-                            child: Text(
-                              '120k',
-                              style: GoogleFonts.outfit(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: FittedBox(
-                              child: Text(
-                                '+10',
-                                style: GoogleFonts.outfit(
-                                  fontSize: 14,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
+                          users == null
+                              ? const Center(
+                                  child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1,
+                                      )),
+                                )
+                              : FittedBox(
+                                  child: Text(
+                                    ref
+                                            .watch(authRepositoryProvider
+                                                .select((value) => value.users))
+                                            ?.where((element) =>
+                                                element.updatedAt != null)
+                                            .length
+                                            .toString() ??
+                                        '0',
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: FittedBox(
+                          //     child: Text(
+                          //       '+10',
+                          //       style: GoogleFonts.outfit(
+                          //         fontSize: 14,
+                          //         color: Colors.green,
+                          //         fontWeight: FontWeight.w600,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -100,28 +130,37 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text('Active Users'),
-                          FittedBox(
-                            child: Text(
-                              '-5',
-                              style: GoogleFonts.outfit(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: FittedBox(
-                              child: Text(
-                                '-500',
-                                style: GoogleFonts.outfit(
-                                  fontSize: 14,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600,
+                          users == null
+                              ? const Center(
+                                  child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1,
+                                      )),
+                                )
+                              : FittedBox(
+                                  child: Text(
+                                    count.toString(),
+                                    style: GoogleFonts.outfit(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: FittedBox(
+                          //     child: Text(
+                          //       '-50',
+                          //       style: GoogleFonts.outfit(
+                          //         fontSize: 14,
+                          //         color: Colors.red,
+                          //         fontWeight: FontWeight.w600,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -186,7 +225,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             const SizedBox(
               height: 20,
             ),
-            MyHomePage(),
+            users == null
+                ? const Center(
+                    child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        )),
+                  )
+                : MyHomePage(),
             const SizedBox(
               height: 20,
             ),

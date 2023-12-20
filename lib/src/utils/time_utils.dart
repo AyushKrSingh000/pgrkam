@@ -8,3 +8,9 @@ prettyTimestamp(DateTime? timestamp) {
 
   return '$formattedTime, $formattedDate';
 }
+
+DateTime prettyTimestamp2(String time) {
+  DateTime dateTime = DateTime.parse(time);
+
+  return dateTime;
+}

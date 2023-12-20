@@ -14,6 +14,7 @@ class UserData {
   final String password;
   @JsonKey(name: 'role')
   final String role;
+  final String? updatedAt;
   final int? phone;
 
   UserData({
@@ -21,8 +22,9 @@ class UserData {
     required this.userName,
     required this.password,
     required this.role,
-    required this.phone,
+    this.phone,
     required this.email,
+    this.updatedAt,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) =>

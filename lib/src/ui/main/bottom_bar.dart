@@ -39,7 +39,7 @@ class PGKRAMBottomBar extends ConsumerWidget {
           Container(
             height: PGKRAMBottomBar.height,
             decoration: const BoxDecoration(
-              color: Color(0xffffa87c),
+              color: Colors.orange,
               boxShadow: [
                 BoxShadow(
                   color: Color(0xFFdddddd),
@@ -79,14 +79,14 @@ class PGKRAMBottomBar extends ConsumerWidget {
                     _removeFocus(context);
                   },
                 ),
-                _NavigationBarItem(
-                  label: 'Applied Jobs',
-                  isActive: activeIndex == 2,
-                  onTap: () async {
-                    router.setActiveIndex(2);
-                    _removeFocus(context);
-                  },
-                ),
+                // _NavigationBarItem(
+                //   label: 'Applied Jobs',
+                //   isActive: activeIndex == 2,
+                //   onTap: () async {
+                //     router.setActiveIndex(2);
+                //     _removeFocus(context);
+                //   },
+                // ),
                 _NavigationBarItem(
                   label: 'Profile',
                   isActive: activeIndex == 3,
@@ -143,7 +143,7 @@ class _NavigationBarItem extends StatelessWidget {
                 label,
                 style: GoogleFonts.lato(
                   color: isActive ? const Color(0xFF000000) : Colors.white,
-                  fontSize: isActive ? 15 : 12,
+                  fontSize: isActive ? 18 : 15,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.2,
                 ),

@@ -25,7 +25,7 @@ class Cta extends ConsumerWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: const Color(0xFF5998f7),
+          color: Colors.green[900],
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(

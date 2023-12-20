@@ -37,6 +37,13 @@ class AuthPageModel extends StateNotifier<AuthPageState> {
         password: value,
         status: AuthPageStatus.initial,
       );
+  setAuthScreenStatus(AuthScreen status) {
+    state = state.copyWith(activeScreen: status);
+  }
+
+  setMobile(int mobile) => state = state.copyWith(mobiles: mobile);
+  setName(String name) => state = state.copyWith(name: name);
+  setRole(UserType userType) => state = state.copyWith(userType: userType);
 
   Future<String> login() async {
     try {
@@ -69,16 +76,19 @@ class AuthPageState with _$AuthPageState {
   const factory AuthPageState({
     @Default('') String mobile,
     @Default('') String password,
+    @Default('') String name,
+    @Default(0) int mobiles,
+    @Default(UserType.applicant) UserType userType,
     @Default(AuthPageStatus.initial) AuthPageStatus status,
     // @Default(true) bool isTncAccepted,
-    // @Default(AuthScreen.login) AuthScreen activeScreen,
+    @Default(AuthScreen.signIn) AuthScreen activeScreen,
     String? errorMessage,
   }) = _AuthPageState;
 }
 
 enum AuthScreen {
-  login,
-  otpVerification,
+  signIn,
+  signUp,
 }
 
 enum AuthPageStatus {
@@ -86,3 +96,5 @@ enum AuthPageStatus {
   processing,
   error,
 }
+
+enum UserType { employer, applicant }

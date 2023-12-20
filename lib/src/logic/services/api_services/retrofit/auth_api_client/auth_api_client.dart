@@ -27,4 +27,10 @@ abstract class AuthApiClient {
   Future fetchUsersData();
   @GET('/job')
   Future fetchJobsData();
+  @GET('/user/recommend')
+  Future fetchRecommendedJobs({
+    @Header('authorization') required String token,
+  });
+  @GET('/user')
+  Future fetchUsersList();
 }

@@ -18,16 +18,16 @@ class TitleDescription extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.rubik(
-            fontSize: 20,
+            fontSize: 22,
             color: const Color(0xFF333333),
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 10),
         Text(
           description,
           style: GoogleFonts.rubik(
-            fontSize: 15,
+            fontSize: 14,
             letterSpacing: 0.0,
             fontWeight: FontWeight.w400,
             color: const Color(0xFF555555),

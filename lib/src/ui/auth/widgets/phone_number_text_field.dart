@@ -34,17 +34,8 @@ class _PhoneNumberTextFieldState extends ConsumerState<EmailTextField> {
       child: TextFormField(
         controller: _controller,
 
-        cursorColor: const Color(0xFF3886eb),
+        cursorColor: Colors.orange.withOpacity(0.6),
         decoration: InputDecoration(
-          prefixIcon: SizedBox(
-            width: 10,
-            child: Center(
-                // child: SvgPicture.asset(
-                //   'assets/images/ic_indian-flag.svg',
-                //   width: 24,
-                // ),
-                ),
-          ),
           hintText: 'Enter email',
           hintStyle: GoogleFonts.rubik(
             color: const Color(0XFF777777),
@@ -53,7 +44,7 @@ class _PhoneNumberTextFieldState extends ConsumerState<EmailTextField> {
             fontWeight: FontWeight.w400,
           ),
           counterText: '',
-          contentPadding: const EdgeInsets.fromLTRB(58, 18, 13, 18),
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 13, 18),
           filled: true,
           fillColor: const Color(0xFFf7f7f7),
           enabledBorder: OutlineInputBorder(
@@ -64,7 +55,7 @@ class _PhoneNumberTextFieldState extends ConsumerState<EmailTextField> {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xFF1878f3).withOpacity(0.6),
+              color: Colors.orange.withOpacity(0.6),
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(15),
@@ -99,7 +90,7 @@ class _PasswordTextFieldState extends ConsumerState<PasswordTextField> {
   void initState() {
     super.initState();
     _controller = TextEditingController(
-      text: ref.read(authPageModelProvider).mobile,
+      text: ref.read(authPageModelProvider).password,
     );
     _controller.addListener(() {
       ref.read(authPageModelProvider.notifier).setPassword(_controller.text);
@@ -112,17 +103,8 @@ class _PasswordTextFieldState extends ConsumerState<PasswordTextField> {
       height: 50,
       child: TextFormField(
         controller: _controller,
-        cursorColor: const Color(0xFF3886eb),
+        cursorColor: Colors.orange.withOpacity(0.6),
         decoration: InputDecoration(
-          prefixIcon: SizedBox(
-            width: 10,
-            child: Center(
-                // child: SvgPicture.asset(
-                //   'assets/images/ic_indian-flag.svg',
-                //   width: 24,
-                // ),
-                ),
-          ),
           hintText: 'Enter password',
           hintStyle: GoogleFonts.rubik(
             color: const Color(0XFF777777),
@@ -131,7 +113,7 @@ class _PasswordTextFieldState extends ConsumerState<PasswordTextField> {
             fontWeight: FontWeight.w400,
           ),
           counterText: '',
-          contentPadding: const EdgeInsets.fromLTRB(58, 18, 13, 18),
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 13, 18),
           filled: true,
           fillColor: const Color(0xFFf7f7f7),
           enabledBorder: OutlineInputBorder(
@@ -142,12 +124,152 @@ class _PasswordTextFieldState extends ConsumerState<PasswordTextField> {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color(0xFF1878f3).withOpacity(0.6),
+              color: Colors.orange.withOpacity(0.6),
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(15),
           ),
         ),
+        style: GoogleFonts.rubik(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: const Color(0XFF333333),
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class NameTextField extends ConsumerStatefulWidget {
+  const NameTextField({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  ConsumerState createState() => _NameTextFieldState();
+}
+
+class _NameTextFieldState extends ConsumerState<NameTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: ref.read(authPageModelProvider).name,
+    );
+    _controller.addListener(() {
+      ref.read(authPageModelProvider.notifier).setName(_controller.text);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+        controller: _controller,
+        cursorColor: Colors.orange.withOpacity(0.6),
+        decoration: InputDecoration(
+          hintText: 'Enter Name',
+          hintStyle: GoogleFonts.rubik(
+            color: const Color(0XFF777777),
+            fontSize: 15.5,
+            letterSpacing: 0.1,
+            fontWeight: FontWeight.w400,
+          ),
+          counterText: '',
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 13, 18),
+          filled: true,
+          fillColor: const Color(0xFFf7f7f7),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color(0xFFeeeeee),
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.orange.withOpacity(0.6),
+              width: 1.5,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        style: GoogleFonts.rubik(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: const Color(0XFF333333),
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class MobileTextField extends ConsumerStatefulWidget {
+  const MobileTextField({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  ConsumerState createState() => _MobileTextFieldState();
+}
+
+class _MobileTextFieldState extends ConsumerState<MobileTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: ref.read(authPageModelProvider).mobile,
+    );
+    _controller.addListener(() {
+      ref.read(authPageModelProvider.notifier).setMobile(
+          _controller.text.trim().isEmpty ? 0 : int.parse(_controller.text));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+        controller: _controller,
+        cursorColor: Colors.orange.withOpacity(0.6),
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: 'Enter Mobile Number',
+          hintStyle: GoogleFonts.rubik(
+            color: const Color(0XFF777777),
+            fontSize: 15.5,
+            letterSpacing: 0.1,
+            fontWeight: FontWeight.w400,
+          ),
+          counterText: '',
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 13, 18),
+          filled: true,
+          fillColor: const Color(0xFFf7f7f7),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color(0xFFeeeeee),
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.orange.withOpacity(0.6),
+              width: 1.5,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        maxLength: 10,
         style: GoogleFonts.rubik(
           fontSize: 16,
           fontWeight: FontWeight.w400,

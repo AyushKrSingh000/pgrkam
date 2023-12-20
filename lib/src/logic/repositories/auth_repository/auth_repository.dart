@@ -39,6 +39,7 @@ class AuthRepository extends StateNotifier<AuthState> {
     //   status: AuthStatus.unauthenticated,
     // );
     fetchUserDetails();
+    fetchJobsDetails();
   }
 
   fetchUserDetails() async {
@@ -61,6 +62,13 @@ class AuthRepository extends StateNotifier<AuthState> {
         );
         if (state.authUser != null && state.authUser!.role != 'applicant') {
           fetchUsersDetails();
+        }
+        if (state.authUser != null && state.authUser!.role == 'applicant') {
+          fetchRecommendedJobsDetails();
+        } else {
+          state = state.copyWith(
+            status: AuthStatus.authenticated,
+          );
         }
       } else {
         state = state.copyWith(
@@ -89,16 +97,98 @@ class AuthRepository extends StateNotifier<AuthState> {
 
     if (response.status == ApiStatus.success) {
       state = state.copyWith(
-        status: AuthStatus.authenticated,
+        // status: AuthStatus.authenticated,
         // idToken: authToken,
         applicantData: response.data,
+      );
+
+      // fetchJobsDetails();
+    } else {
+      state = state.copyWith(
+        status: AuthStatus.unauthenticated,
+      );
+    }
+  }
+
+  fetchRecommendedJobsDetails() async {
+    final authToken = preferenceService.getString(
+      PreferenceService.authToken,
+    );
+
+    if (authToken != null) {
+      debugPrint(authToken);
+      final response = await apiService.fetchRecommendedJobsDetails(
+        authToken: authToken,
+      );
+      print('object2');
+
+      if (response.status == ApiStatus.success) {
+        state = state.copyWith(
+          status: AuthStatus.authenticated,
+          // idToken: authToken,
+          recommmendedJobs: response.data,
+        );
+        // fetchJobsDetails();
+      } else {
+        state = state.copyWith(
+          status: AuthStatus.unauthenticated,
+        );
+      }
+    }
+  }
+
+  fetchJobsDetails() async {
+    // final authToken = preferenceService.getString(
+    //   PreferenceService.authToken,
+    // );
+    // state = state.copyWith(
+    //   status: AuthStatus.initial,
+    // );
+    // if (authToken != null) {
+    //   debugPrint(authToken);
+    final response = await apiService.fetchJobsDetails(
+        // authToken: authToken,
+        );
+
+    if (response.status == ApiStatus.success) {
+      state = state.copyWith(
+        // status: AuthStatus.authenticated,
+        // idToken: authToken,
+        jobData: response.data,
+      );
+      fetchUserList();
+    } else {
+      state = state.copyWith(
+          // status: AuthStatus.unauthenticated,
+          );
+    }
+    // }
+  }
+
+  fetchUserList() async {
+    // final authToken = preferenceService.getString(
+    //   PreferenceService.authToken,
+    // );
+    // state = state.copyWith(
+    //   status: AuthStatus.initial,
+    // );
+    // if (authToken != null) {
+    //   debugPrint(authToken);
+    final response = await apiService.fetchUserList(
+        // authToken: authToken,
+        );
+
+    if (response.status == ApiStatus.success) {
+      state = state.copyWith(
+        status: AuthStatus.authenticated,
+        // idToken: authToken,
+        users: response.data,
       );
     } else {
       state = state.copyWith(
         status: AuthStatus.unauthenticated,
       );
     }
-
     // }
   }
 
@@ -107,6 +197,7 @@ class AuthRepository extends StateNotifier<AuthState> {
     state = state.copyWith(
       status: AuthStatus.unauthenticated,
       authUser: null,
+      recommmendedJobs: null,
       idToken: null,
     );
   }
@@ -136,6 +227,9 @@ class AuthState with _$AuthState {
     @Default(null) UserData? authUser,
     @Default(null) String? idToken,
     @Default(null) List<ApplicantData>? applicantData,
+    @Default(null) List<JobData>? jobData,
+    @Default(null) List<UserData>? users,
+    @Default(null) List<Map<JobData, double>>? recommmendedJobs,
     @Default(AuthStatus.initial) AuthStatus status,
   }) = _AuthState;
 }

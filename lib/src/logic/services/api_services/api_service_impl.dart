@@ -139,7 +139,7 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<List<List<String>>>> fetchJobsDetails() async {
+  Future<ApiResponse<List<JobData>>> fetchJobsDetails() async {
     try {
       final response =
           await _authApiClient.fetchJobsData() as Map<String, dynamic>;
@@ -147,8 +147,7 @@ class ApiServiceImpl extends ApiService {
       if (response['message'].toString().toLowerCase().trim() ==
           'Successfully completed the request'.toLowerCase()) {
         return ApiResponse.success((response['data'] as List)
-            .map((e) =>
-                ((e as Map<String, dynamic>)['industry'] ?? []) as List<String>)
+            .map((e) => JobData.fromJson(e))
             .toList());
       } else {
         return ApiResponse.error('Something Went Wrong');
@@ -158,13 +157,78 @@ class ApiServiceImpl extends ApiService {
       if (e.runtimeType == DioError &&
           (e as DioError).type == DioErrorType.badResponse &&
           e.response?.statusCode == 401) {
-        return ApiResponse<List<List<String>>>.authError();
+        return ApiResponse<List<JobData>>.authError();
       }
       final hasInternet = await hasInternetAccess();
       if (!hasInternet!) {
-        return ApiResponse<List<List<String>>>.noInternet();
+        return ApiResponse<List<JobData>>.noInternet();
       }
-      return ApiResponse<List<List<String>>>.error('Something went wrong');
+      return ApiResponse<List<JobData>>.error('Something went wrong');
     }
+  }
+
+  @override
+  Future<ApiResponse<List<UserData>>> fetchUserList() async {
+    try {
+      final response =
+          await _authApiClient.fetchUsersList() as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success((response['data'] as List)
+            .map((e) => UserData.fromJson(e))
+            .toList());
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<List<UserData>>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<List<UserData>>.noInternet();
+      }
+      return ApiResponse<List<UserData>>.error('Something went wrong');
+    }
+  }
+
+  @override
+  Future<ApiResponse<List<Map<JobData, double>>>> fetchRecommendedJobsDetails({
+    required String authToken,
+  }) async {
+    // try {
+    final response = await _authApiClient.fetchRecommendedJobs(
+      token: authToken,
+    ) as Map<String, dynamic>;
+
+    if (response['message'].toString().toLowerCase().trim() ==
+        'Successfully completed the request'.toLowerCase()) {
+      return ApiResponse.success((response['data'] as List)
+          .map((e) => {
+                JobData.fromJson(e['job']):
+                    double.parse(e['success'].toString())
+              })
+          .toList());
+    } else {
+      return ApiResponse.error('Something Went Wrong');
+    }
+    // } catch (e) {
+    //   debugPrint(e.toString());
+    //   if (e.runtimeType == DioError &&
+    //       (e as DioError).type == DioErrorType.badResponse &&
+    //       e.response?.statusCode == 401) {
+    //     return ApiResponse<List<Map<JobData, double>>>.authError();
+    //   }
+    //   final hasInternet = await hasInternetAccess();
+    //   if (!hasInternet!) {
+    //     return ApiResponse<List<Map<JobData, double>>>.noInternet();
+    //   }
+    //   return ApiResponse<List<Map<JobData, double>>>.error(
+    //       'Something went wrong');
+    // }
   }
 }

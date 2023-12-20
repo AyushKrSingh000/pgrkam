@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +71,7 @@ class _DemographicInformationPageState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Select Filter'),
+                    const Text('Select Filter'),
                     CustomDropDownButton<int>(
                       selectedId: selectedFirstFilter,
                       onChanged: (value) {
@@ -96,7 +95,7 @@ class _DemographicInformationPageState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Select Interest : '),
+                      const Text('Select Interest : '),
                       CustomDropDownButton<String>(
                         selectedId: selectedInterests,
                         onChanged: (value) {
@@ -105,7 +104,7 @@ class _DemographicInformationPageState
                           });
                         },
                         data: [
-                          {'All': 'All'},
+                          const {'All': 'All'},
                           ...interests.entries.map((e) => {e.key: e.key})
                         ],
                       ),
@@ -120,7 +119,7 @@ class _DemographicInformationPageState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Select Gender : '),
+                      const Text('Select Gender : '),
                       CustomDropDownButton<String>(
                         selectedId: selectedGender,
                         onChanged: (value) {
@@ -128,7 +127,7 @@ class _DemographicInformationPageState
                             selectedGender = value;
                           });
                         },
-                        data: [
+                        data: const [
                           {'All': 'All'},
                           {'Male': 'Male'},
                           {"Female": "Female"},
@@ -205,27 +204,29 @@ class _DemographicInformationPageState
                                 BarChartRodData(
                                   toY: selectedFirstFilter == 1 &&
                                           selectedInterest != 1
-                                      ? (((datas[name[e + 1]] ?? []).where((e2) =>
+                                      ? (((datas[name[e]] ?? []).where((e2) =>
                                               e2.highestEducation ==
                                               highestEducation[selectedInterest]))
                                           .toList()
                                           .length
                                           .toDouble())
                                       : selectedFirstFilter == 3 &&
-                                              selectedInterests != 'All'
-                                          ? (((datas[name[e + 1]] ?? [])
+                                              selectedInterests != 'All' &&
+                                              selectedInterests != null
+                                          ? (((datas[name[e]] ?? [])
                                                   .where((e2) => e2.skills.contains(selectedInterests)))
                                               .toList()
                                               .length
                                               .toDouble())
                                           : selectedFirstFilter == 2 &&
-                                                  selectedGender != 'All'
-                                              ? (((datas[name[e + 1]] ?? [])
+                                                  selectedGender != 'All' &&
+                                                  selectedGender != null
+                                              ? (((datas[name[e]] ?? [])
                                                       .where((e2) => e2.gender.toLowerCase() == selectedGender?.toLowerCase()))
                                                   .toList()
                                                   .length
                                                   .toDouble())
-                                              : (datas[name[e + 1]] ?? [])
+                                              : (datas[name[e]] ?? [])
                                                   .toList()
                                                   .length
                                                   .toDouble(),

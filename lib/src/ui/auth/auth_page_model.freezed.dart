@@ -18,9 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthPageState {
   String get mobile => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  int get mobiles => throw _privateConstructorUsedError;
+  UserType get userType => throw _privateConstructorUsedError;
   AuthPageStatus get status =>
       throw _privateConstructorUsedError; // @Default(true) bool isTncAccepted,
-// @Default(AuthScreen.login) AuthScreen activeScreen,
+  AuthScreen get activeScreen => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -37,7 +40,11 @@ abstract class $AuthPageStateCopyWith<$Res> {
   $Res call(
       {String mobile,
       String password,
+      String name,
+      int mobiles,
+      UserType userType,
       AuthPageStatus status,
+      AuthScreen activeScreen,
       String? errorMessage});
 }
 
@@ -56,7 +63,11 @@ class _$AuthPageStateCopyWithImpl<$Res, $Val extends AuthPageState>
   $Res call({
     Object? mobile = null,
     Object? password = null,
+    Object? name = null,
+    Object? mobiles = null,
+    Object? userType = null,
     Object? status = null,
+    Object? activeScreen = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -68,10 +79,26 @@ class _$AuthPageStateCopyWithImpl<$Res, $Val extends AuthPageState>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      mobiles: null == mobiles
+          ? _value.mobiles
+          : mobiles // ignore: cast_nullable_to_non_nullable
+              as int,
+      userType: null == userType
+          ? _value.userType
+          : userType // ignore: cast_nullable_to_non_nullable
+              as UserType,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthPageStatus,
+      activeScreen: null == activeScreen
+          ? _value.activeScreen
+          : activeScreen // ignore: cast_nullable_to_non_nullable
+              as AuthScreen,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -91,7 +118,11 @@ abstract class _$$AuthPageStateImplCopyWith<$Res>
   $Res call(
       {String mobile,
       String password,
+      String name,
+      int mobiles,
+      UserType userType,
       AuthPageStatus status,
+      AuthScreen activeScreen,
       String? errorMessage});
 }
 
@@ -108,7 +139,11 @@ class __$$AuthPageStateImplCopyWithImpl<$Res>
   $Res call({
     Object? mobile = null,
     Object? password = null,
+    Object? name = null,
+    Object? mobiles = null,
+    Object? userType = null,
     Object? status = null,
+    Object? activeScreen = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_$AuthPageStateImpl(
@@ -120,10 +155,26 @@ class __$$AuthPageStateImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      mobiles: null == mobiles
+          ? _value.mobiles
+          : mobiles // ignore: cast_nullable_to_non_nullable
+              as int,
+      userType: null == userType
+          ? _value.userType
+          : userType // ignore: cast_nullable_to_non_nullable
+              as UserType,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthPageStatus,
+      activeScreen: null == activeScreen
+          ? _value.activeScreen
+          : activeScreen // ignore: cast_nullable_to_non_nullable
+              as AuthScreen,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -140,7 +191,11 @@ class _$AuthPageStateImpl
   const _$AuthPageStateImpl(
       {this.mobile = '',
       this.password = '',
+      this.name = '',
+      this.mobiles = 0,
+      this.userType = UserType.applicant,
       this.status = AuthPageStatus.initial,
+      this.activeScreen = AuthScreen.signIn,
       this.errorMessage});
 
   @override
@@ -151,15 +206,26 @@ class _$AuthPageStateImpl
   final String password;
   @override
   @JsonKey()
+  final String name;
+  @override
+  @JsonKey()
+  final int mobiles;
+  @override
+  @JsonKey()
+  final UserType userType;
+  @override
+  @JsonKey()
   final AuthPageStatus status;
 // @Default(true) bool isTncAccepted,
-// @Default(AuthScreen.login) AuthScreen activeScreen,
+  @override
+  @JsonKey()
+  final AuthScreen activeScreen;
   @override
   final String? errorMessage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthPageState(mobile: $mobile, password: $password, status: $status, errorMessage: $errorMessage)';
+    return 'AuthPageState(mobile: $mobile, password: $password, name: $name, mobiles: $mobiles, userType: $userType, status: $status, activeScreen: $activeScreen, errorMessage: $errorMessage)';
   }
 
   @override
@@ -169,7 +235,11 @@ class _$AuthPageStateImpl
       ..add(DiagnosticsProperty('type', 'AuthPageState'))
       ..add(DiagnosticsProperty('mobile', mobile))
       ..add(DiagnosticsProperty('password', password))
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('mobiles', mobiles))
+      ..add(DiagnosticsProperty('userType', userType))
       ..add(DiagnosticsProperty('status', status))
+      ..add(DiagnosticsProperty('activeScreen', activeScreen))
       ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
 
@@ -181,14 +251,20 @@ class _$AuthPageStateImpl
             (identical(other.mobile, mobile) || other.mobile == mobile) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.mobiles, mobiles) || other.mobiles == mobiles) &&
+            (identical(other.userType, userType) ||
+                other.userType == userType) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.activeScreen, activeScreen) ||
+                other.activeScreen == activeScreen) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, mobile, password, status, errorMessage);
+  int get hashCode => Object.hash(runtimeType, mobile, password, name, mobiles,
+      userType, status, activeScreen, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -201,7 +277,11 @@ abstract class _AuthPageState implements AuthPageState {
   const factory _AuthPageState(
       {final String mobile,
       final String password,
+      final String name,
+      final int mobiles,
+      final UserType userType,
       final AuthPageStatus status,
+      final AuthScreen activeScreen,
       final String? errorMessage}) = _$AuthPageStateImpl;
 
   @override
@@ -209,9 +289,16 @@ abstract class _AuthPageState implements AuthPageState {
   @override
   String get password;
   @override
+  String get name;
+  @override
+  int get mobiles;
+  @override
+  UserType get userType;
+  @override
   AuthPageStatus get status;
   @override // @Default(true) bool isTncAccepted,
-// @Default(AuthScreen.login) AuthScreen activeScreen,
+  AuthScreen get activeScreen;
+  @override
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
