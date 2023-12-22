@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pgrkam/src/models/responses/job_data.dart';
 import 'package:pgrkam/src/ui/home/demographic/dropdown_filter.dart';
+import 'package:pgrkam/src/ui/home/demographic/user_info_page.dart';
 
 import '../../../logic/repositories/auth_repository/auth_repository.dart';
 
@@ -21,12 +22,30 @@ class _DemographicInformationPageState
   int selectedFirstFilter = 1;
   int? selectedSecondFilter;
   int selectedInterest = 1;
+  int pages = 1;
+  int selectedPage = 1;
   String? selectedInterests;
   String? selectedGender;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      final applicantData = ref
+          .watch(authRepositoryProvider.select((value) => value.applicantData));
+      final datas = applicantData == null
+          ? null
+          : groupBy(applicantData.reversed,
+              (ApplicantData obj) => obj.location?.toLowerCase());
+      pages = ((datas?.length ?? 0) / 10).ceil().toInt();
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final count = List<int>.generate(10, (i) => i);
+    final count = List<int>.generate(10, (i) => i + (selectedPage - 1) * 10);
 
     final applicantData = ref
         .watch(authRepositoryProvider.select((value) => value.applicantData));
@@ -34,6 +53,7 @@ class _DemographicInformationPageState
         ? null
         : groupBy(applicantData.reversed,
             (ApplicantData obj) => obj.location?.toLowerCase());
+    pages = ((datas?.length ?? 0) / 10).ceil().toInt();
     final interests = applicantData == null
         ? null
         : groupBy(
@@ -251,6 +271,39 @@ class _DemographicInformationPageState
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List<int>.generate(pages, (index) => index + 1)
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedPage = e;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: selectedPage == e
+                                    ? Colors.green
+                                    : Colors.grey.shade200,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  e.toString(),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -294,60 +347,107 @@ class _DemographicInformationPageState
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              name[index] ?? '',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserInfoPage(
+                                          data: (selectedFirstFilter == 1 &&
+                                                  selectedInterest != 1
+                                              ? ((datas[name[index]] ?? [])
+                                                  .where((e2) =>
+                                                      e2.highestEducation ==
+                                                      highestEducation[
+                                                          selectedInterest])
+                                                  .toList())
+                                              : selectedFirstFilter == 3 &&
+                                                      selectedInterests != 'All'
+                                                  ? (((datas[name[index]] ?? [])
+                                                          .where((e2) => e2.skills.contains(selectedInterests)))
+                                                      .toList())
+                                                  : selectedFirstFilter == 2 &&
+                                                          selectedGender !=
+                                                              'All'
+                                                      ? (((datas[name[index]] ?? []).where((e2) =>
+                                                              e2.gender.toLowerCase() ==
+                                                              selectedGender
+                                                                  ?.toLowerCase()))
+                                                          .toList())
+                                                      : (datas[name[index]] ?? [])
+                                                          .toList()),
+                                        )));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                name[index] ?? '',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Text(
-                              (selectedFirstFilter == 1 && selectedInterest != 1
-                                  ? ((datas[name[index]] ?? [])
-                                      .where((e2) =>
-                                          e2.highestEducation ==
-                                          highestEducation[selectedInterest])
-                                      .toList()
-                                      .length
-                                      .toString())
-                                  : selectedFirstFilter == 3 &&
-                                          selectedInterests != 'All'
-                                      ? (((datas[name[index]] ?? []).where(
-                                              (e2) => e2.skills
-                                                  .contains(selectedInterests)))
-                                          .toList()
-                                          .length
-                                          .toString())
-                                      : selectedFirstFilter == 2 &&
-                                              selectedGender != 'All'
-                                          ? (((datas[name[index]] ?? []).where(
-                                                  (e2) =>
-                                                      e2.gender.toLowerCase() ==
-                                                      selectedGender
-                                                          ?.toLowerCase()))
-                                              .toList()
-                                              .length
-                                              .toString())
-                                          : (datas[name[index]] ?? [])
-                                              .toList()
-                                              .length
-                                              .toString()),
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                              Row(
+                                children: [
+                                  Text(
+                                    (selectedFirstFilter == 1 &&
+                                            selectedInterest != 1
+                                        ? ((datas[name[index]] ?? [])
+                                            .where((e2) =>
+                                                e2.highestEducation ==
+                                                highestEducation[
+                                                    selectedInterest])
+                                            .toList()
+                                            .length
+                                            .toString())
+                                        : selectedFirstFilter == 3 &&
+                                                selectedInterests != 'All'
+                                            ? (((datas[name[index]] ?? [])
+                                                    .where((e2) => e2.skills
+                                                        .contains(selectedInterests)))
+                                                .toList()
+                                                .length
+                                                .toString())
+                                            : selectedFirstFilter == 2 &&
+                                                    selectedGender != 'All'
+                                                ? (((datas[name[index]] ?? [])
+                                                        .where((e2) =>
+                                                            e2.gender.toLowerCase() ==
+                                                            selectedGender
+                                                                ?.toLowerCase()))
+                                                    .toList()
+                                                    .length
+                                                    .toString())
+                                                : (datas[name[index]] ?? [])
+                                                    .toList()
+                                                    .length
+                                                    .toString()),
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 16,
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   );
                 },
               ),
-            ],
+            ] else
+              CircularProgressIndicator(),
           ],
         ),
       ),

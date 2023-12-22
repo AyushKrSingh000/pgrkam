@@ -27,4 +27,18 @@ abstract class ApiService {
     required String authToken,
   });
   Future<ApiResponse<Map<String, dynamic>>> fetchTrackData();
+  Future<ApiResponse<String>> signUp({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+    required int phone,
+  });
+  Future<ApiResponse<String>> addApplicant({
+    required String location,
+    required String userId,
+    required String education,
+    required String gender,
+    required List<String> skills,
+  });
 }

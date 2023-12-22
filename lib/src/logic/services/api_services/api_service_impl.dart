@@ -258,4 +258,82 @@ class ApiServiceImpl extends ApiService {
       return ApiResponse<Map<String, dynamic>>.error('Something went wrong');
     }
   }
+
+  @override
+  Future<ApiResponse<String>> signUp({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+    required int phone,
+  }) async {
+    try {
+      final response = await _authApiClient.signUp(
+          userLoginRequest: UserData(
+              userId: '',
+              userName: name,
+              password: password,
+              role: role,
+              phone: phone,
+              email: email)) as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success(((response['data'] as Map)['_id']));
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<String>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<String>.noInternet();
+      }
+      return ApiResponse<String>.error('Something went wrong');
+    }
+  }
+
+  @override
+  Future<ApiResponse<String>> addApplicant({
+    required String location,
+    required String userId,
+    required String education,
+    required String gender,
+    required List<String> skills,
+  }) async {
+    try {
+      final response = await _authApiClient.addApplicant(
+          userLoginRequest: ApplicantData(
+              userId: userId,
+              highestEducation: education,
+              gender: gender,
+              agreement: false,
+              location: location,
+              skills: skills)) as Map<String, dynamic>;
+
+      if (response['message'].toString().toLowerCase().trim() ==
+          'Successfully completed the request'.toLowerCase()) {
+        return ApiResponse.success(((response['data'] as Map)['_id']));
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      if (e.runtimeType == DioError &&
+          (e as DioError).type == DioErrorType.badResponse &&
+          e.response?.statusCode == 401) {
+        return ApiResponse<String>.authError();
+      }
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet!) {
+        return ApiResponse<String>.noInternet();
+      }
+      return ApiResponse<String>.error('Something went wrong');
+    }
+  }
 }

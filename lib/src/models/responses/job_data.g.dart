@@ -8,9 +8,10 @@ part of 'job_data.dart';
 
 ApplicantData _$ApplicantDataFromJson(Map<String, dynamic> json) =>
     ApplicantData(
-      userId: json['_id'] as String,
+      userId: json['userId'] as String,
       highestEducation: json['highest_education'] as String,
       gender: json['gender'] as String,
+      agreement: json['agreement'] as bool? ?? false,
       location: json['constituency'] as String?,
       skills:
           (json['skills'] as List<dynamic>).map((e) => e as String).toList(),
@@ -18,10 +19,11 @@ ApplicantData _$ApplicantDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ApplicantDataToJson(ApplicantData instance) =>
     <String, dynamic>{
-      '_id': instance.userId,
+      'userId': instance.userId,
       'constituency': instance.location,
       'gender': instance.gender,
       'highest_education': instance.highestEducation,
+      'agreement': instance.agreement,
       'skills': instance.skills,
     };
 

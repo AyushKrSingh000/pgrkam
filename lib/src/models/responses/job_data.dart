@@ -4,26 +4,28 @@ part 'job_data.g.dart';
 
 @JsonSerializable()
 class ApplicantData {
-  @JsonKey(name: '_id')
+  // @JsonKey(name: 'u')
   final String userId;
   @JsonKey(name: 'constituency')
   final String? location;
   final String gender;
   @JsonKey(name: 'highest_education')
   final String highestEducation;
-
+  final bool agreement;
   final List<String> skills;
 
   ApplicantData({
     required this.userId,
     required this.highestEducation,
     required this.gender,
+    this.agreement = false,
     this.location,
     required this.skills,
   });
 
   factory ApplicantData.fromJson(Map<String, dynamic> json) =>
       _$ApplicantDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ApplicantDataToJson(this);
 }
 
 @JsonSerializable()

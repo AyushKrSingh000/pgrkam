@@ -1,3 +1,7 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pgrkam/src/models/responses/job_data.dart';
+import 'package:pgrkam/src/models/responses/user_data.dart';
+
 import '../../../../../models/requests/user_login_request.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -35,4 +39,12 @@ abstract class AuthApiClient {
   Future fetchUsersList();
   @GET('/track/stats')
   Future fetchTrackData();
+  @POST('/user/signup')
+  Future signUp({
+    @Body() required UserData userLoginRequest,
+  });
+  @POST('/applicant')
+  Future addApplicant({
+    @Body() required ApplicantData userLoginRequest,
+  });
 }

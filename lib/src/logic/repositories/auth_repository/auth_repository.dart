@@ -39,6 +39,7 @@ class AuthRepository extends StateNotifier<AuthState> {
     //   status: AuthStatus.unauthenticated,
     // );
     fetchUserDetails();
+    fetchUsersDetails();
     fetchJobsDetails();
   }
 
@@ -60,14 +61,11 @@ class AuthRepository extends StateNotifier<AuthState> {
           idToken: authToken,
           authUser: response.data,
         );
-        if (state.authUser != null && state.authUser!.role != 'applicant') {
-          fetchUsersDetails();
-        }
         if (state.authUser != null && state.authUser!.role == 'applicant') {
           fetchRecommendedJobsDetails();
         } else {
           state = state.copyWith(
-            status: AuthStatus.authenticated,
+            status: AuthStatus.unauthenticated,
           );
         }
       } else {
@@ -159,8 +157,8 @@ class AuthRepository extends StateNotifier<AuthState> {
       fetchUserList();
     } else {
       state = state.copyWith(
-          // status: AuthStatus.unauthenticated,
-          );
+        status: AuthStatus.unauthenticated,
+      );
     }
     // }
   }
@@ -180,7 +178,7 @@ class AuthRepository extends StateNotifier<AuthState> {
 
     if (response.status == ApiStatus.success) {
       state = state.copyWith(
-        status: AuthStatus.authenticated,
+        // status: AuthStatus.authenticated,
         // idToken: authToken,
         users: response.data,
       );

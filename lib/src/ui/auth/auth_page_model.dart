@@ -38,7 +38,14 @@ class AuthPageModel extends StateNotifier<AuthPageState> {
         status: AuthPageStatus.initial,
       );
   setAuthScreenStatus(AuthScreen status) {
-    state = state.copyWith(activeScreen: status);
+    state = state.copyWith(
+      activeScreen: status,
+      name: '',
+      mobile: '',
+      password: '',
+      mobiles: 0,
+      userType: UserType.employer,
+    );
   }
 
   setMobile(int mobile) => state = state.copyWith(mobiles: mobile);
@@ -60,6 +67,63 @@ class AuthPageModel extends StateNotifier<AuthPageState> {
         await ref.read(authRepositoryProvider.notifier).fetchUserDetails();
         return '';
       }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> signIn(String? gender, String? education, String? district,
+      List<String>? skills) async {
+    try {
+      if (state.name.trim().isEmpty) {
+        return 'Please enter name';
+      }
+      if (state.mobile.trim().isEmpty) {
+        return 'please enter email';
+      }
+      if (state.password.trim().isEmpty) {
+        return 'please enter password';
+      }
+      if (state.mobiles == 0) {
+        return 'please enter phone';
+      }
+
+      if (state.userType == UserType.employer) {
+        if (gender == null || gender.trim().isEmpty) {
+          return 'please enter gender';
+        }
+        if (education == null || education.trim().isEmpty) {
+          return 'please enter eductaion';
+        }
+        if (district == null || district.trim().isEmpty) {
+          return 'please enter district';
+        }
+        if (skills == null || skills.isEmpty) {
+          return 'please enter skills';
+        }
+      }
+      final res = await apiService.signUp(
+          name: state.name,
+          email: state.mobile,
+          password: state.password,
+          role: state.userType == UserType.applicant ? 'applicant' : 'employer',
+          phone: 1223343435445);
+      if (res.status != ApiStatus.success) {
+        return res.errorMessage ?? 'Something Went Wrong';
+      } else {
+        if (mounted && state.userType != UserType.employer) {
+          final res2 = await apiService.addApplicant(
+              location: district!,
+              userId: res.data!,
+              education: education!,
+              gender: gender!,
+              skills: skills ?? []);
+          if (res2.status != ApiStatus.success) {
+            return 'Applicant Data Error';
+          }
+        }
+      }
+      return '';
     } catch (e) {
       return e.toString();
     }

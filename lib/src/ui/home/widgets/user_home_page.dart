@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pgrkam/src/logic/repositories/auth_repository/auth_repository.dart';
 import 'package:pgrkam/src/ui/home/widgets/ad_corousal.dart';
 import 'package:pgrkam/src/ui/home/widgets/course_card.dart';
+import 'package:pgrkam/src/ui/jobs/job__data_page.dart';
 
 import '../../../models/responses/job_data.dart';
 
@@ -24,6 +25,7 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
         authRepositoryProvider.select((value) => value.recommmendedJobs));
     final userData =
         ref.watch(authRepositoryProvider.select((value) => value.authUser));
+
     return (jobsList == null)
         ? const SizedBox(
             height: 600, child: Center(child: CircularProgressIndicator()))
@@ -48,7 +50,7 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
                   ),
                   if (recommendedJobsList != null)
                     SizedBox(
-                      height: 190,
+                      height: 205,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -67,7 +69,7 @@ class _UserHomePageState extends ConsumerState<UserHomePage> {
                     )
                   else
                     const SizedBox(
-                      height: 150,
+                      height: 170,
                       child: Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -143,168 +145,201 @@ class JobCard extends ConsumerStatefulWidget {
 class _JobCardState extends ConsumerState<JobCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.green.withOpacity(0.7),
-      ),
-      // height: 200,
-      width: 300,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Job Title: ',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.jobData.job_title,
-                        maxLines: 2,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => JobDataPage(jobData: widget.jobData)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.green.withOpacity(0.7),
+        ),
+        // height: 200,
+        width: 300,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Job Title: ',
                         style: GoogleFonts.outfit(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Job Salary: ',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.jobData.salary,
-                        style: GoogleFonts.outfit(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Location : ',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.jobData.location,
-                        style: GoogleFonts.outfit(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Industry : ',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.jobData.industry
-                            .fold(
-                                '',
-                                (previousValue, element) =>
-                                    previousValue + '-' + element)
-                            .substring(1),
-                        style: GoogleFonts.outfit(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Experience : ',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.jobData.experience,
-                        style: GoogleFonts.outfit(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            if (widget.successScore != null)
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.orange,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Score : ',
+                      Expanded(
+                        child: Text(
+                          widget.jobData.job_title,
+                          maxLines: 2,
                           style: GoogleFonts.outfit(
-                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Text(
-                          (double.parse(widget.successScore ?? '0')
-                              .toStringAsFixed(3)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Job Type: ',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.jobData.type,
+                          maxLines: 1,
                           style: GoogleFonts.outfit(
-                              // fontWeight: FontWeight.w700,
-                              ),
-                        )
-                      ],
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Job Salary: ',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.jobData.salary,
+                          style: GoogleFonts.outfit(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Location : ',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.jobData.location,
+                          style: GoogleFonts.outfit(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Industry : ',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.jobData.industry
+                              .fold(
+                                  '',
+                                  (previousValue, element) =>
+                                      previousValue + '-' + element)
+                              .substring(1),
+                          style: GoogleFonts.outfit(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Experience : ',
+                        style: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.jobData.experience,
+                          style: GoogleFonts.outfit(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (widget.successScore != null)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.orange,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Score : ',
+                            style: GoogleFonts.outfit(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            (double.parse(widget.successScore ?? '0')
+                                .toStringAsFixed(3)),
+                            style: GoogleFonts.outfit(
+                                // fontWeight: FontWeight.w700,
+                                ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-          ],
+                )
+            ],
+          ),
         ),
       ),
     );

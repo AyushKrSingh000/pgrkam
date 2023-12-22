@@ -35,6 +35,7 @@ class _HomePageState extends ConsumerState<HomePage>
         ref.watch(authRepositoryProvider.select((value) => value.authUser));
     final status =
         ref.watch(authRepositoryProvider.select((value) => value.status));
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: scaffoldColor,
@@ -75,7 +76,7 @@ class _HomePageState extends ConsumerState<HomePage>
             ] else if (userData != null && userData.role == 'applicant') ...[
               const Expanded(child: UserHomePage()),
             ] else if (userData == null &&
-                status == AuthStatus.unauthenticated) ...[
+                (status == AuthStatus.unauthenticated)) ...[
               const Expanded(child: UserHomePage()),
             ] else
               const Expanded(

@@ -69,6 +69,7 @@ class _ProfilePageState extends ConsumerState<AdminProfilePage> {
                       onPressed: () {
                         if (userData != null) {
                           ref.read(authRepositoryProvider.notifier).signOut();
+                          context.popRoute();
                         } else {
                           context.navigateTo(AuthRoute());
                         }
