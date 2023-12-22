@@ -4,6 +4,16 @@
 
 The PGRKAM Analytics Tool is a Flutter-based analytics solution designed to empower administrators by tracking user behavior within the PGRKAM app. This tool captures crucial details, providing insights into user engagement, demographics, and the overall user experience.
 
+<img src="assets/screenshots/13.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/8.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/6.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/5.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/14.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/3.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/9.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/10.jpg" alt="drawing" width="32%"/>
+<img src="assets/screenshots/11.jpg" alt="drawing" width="32%"/>
+
 ## Features
 
 ### 1. User Engagement Tracking
